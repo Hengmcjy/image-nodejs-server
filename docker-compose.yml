@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  image-server:
+    build: .
+    container_name: image-server
+    restart: unless-stopped
+    ports:
+      - "3967:3967"
+    environment:
+      PORT: 3967
+      UPLOAD_BASE_PATH: /app/uploads
+      MAX_FILE_SIZE_MB: 20
+      MAX_FILES_PER_REQUEST: 20
+      # ALLOWED_ORIGINS: "http://192.168.1.100:4200,https://yourdomain.com"
+      # API_KEY: "your-secret-key"
+      SIZE_WEB_WIDTH: 1280
+      SIZE_WEB_QUALITY: 85
+      SIZE_MOBILE_WIDTH: 480
+      SIZE_MOBILE_QUALITY: 75
+      SIZE_THUMB_WIDTH: 200
+      SIZE_THUMB_HEIGHT: 200
+      SIZE_THUMB_QUALITY: 70
+    volumes:
+      # เปลี่ยน path ซ้ายมือให้ตรงกับ folder บน NAS ที่จะใช้เก็บรูป (50GB partition)
+      - /volume1/images:/app/uploads
+    mem_limit: 512m
+    cpus: "1.0"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

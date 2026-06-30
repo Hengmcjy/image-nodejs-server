@@ -62,6 +62,26 @@ router.post('/upload', uploader, async (req, res) => {
   }
 });
 
+// ── POST /api/images/remove — เหมือน DELETE /delete แต่ใช้ POST (บาง proxy strip body ออกจาก DELETE) ──
+router.post('/remove', (req, res) => {
+  const { location, baseName } = req.body;
+  if (!location || !baseName) {
+    return res.status(400).json({ success: false, message: 'location and baseName are required' });
+  }
+  const { folderPath } = resolveFolderPath(location);
+  if (!fs.existsSync(folderPath)) {
+    return res.status(404).json({ success: false, message: 'Folder not found' });
+  }
+  const deleted = [];
+  fs.readdirSync(folderPath)
+    .filter(f => f.startsWith(baseName))
+    .forEach(f => { fs.unlinkSync(path.join(folderPath, f)); deleted.push(f); });
+  if (deleted.length === 0) {
+    return res.status(404).json({ success: false, message: 'File not found' });
+  }
+  return res.json({ success: true, deleted });
+});
+
 // ── DELETE /api/images/delete — ลบไฟล์ที่ขึ้นต้นด้วย baseName ─────
 router.delete('/delete', (req, res) => {
   const { location, baseName } = req.body;

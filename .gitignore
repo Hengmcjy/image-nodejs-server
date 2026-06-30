@@ -1,0 +1,14 @@
+
+
+/node_modules
+/uploads
+*.env
+*.env.example
+SETUP.md
+
+*.rar
+*.zip
+*.xls
+*.xlsx
+*.doc
+*.docx

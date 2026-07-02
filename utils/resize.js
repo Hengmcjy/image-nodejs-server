@@ -1,8 +1,9 @@
 const sharp = require('sharp');
 const path = require('path');
 
-const QUALITY   = parseInt(process.env.IMAGE_QUALITY)    || 90;
-const MAX_WIDTH = parseInt(process.env.IMAGE_MAX_WIDTH)  || 1920;
+// เอกสารค่าแรง worker ต้องอ่านชัด (เจ้าของโรงงานสูงอายุ) → quality 95, กว้างสูงสุด 2560
+const QUALITY   = parseInt(process.env.IMAGE_QUALITY)    || 95;
+const MAX_WIDTH = parseInt(process.env.IMAGE_MAX_WIDTH)  || 2560;
 
 /**
  * แปลง image buffer → webp ไฟล์เดียว
